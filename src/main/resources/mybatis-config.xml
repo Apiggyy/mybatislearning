@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties resource="db.properties"/>
+
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+    
+    <environments default="mysql">
+
+        <environment id="mysql">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${mysql.driver}"/>
+                <property name="url" value="${mysql.url}"/>
+                <property name="username" value="${mysql.username}"/>
+                <property name="password" value="${mysql.password}"/>
+            </dataSource>
+        </environment>
+
+        <environment id="oracle">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${oracle.driver}"/>
+                <property name="url" value="${oracle.url}"/>
+                <property name="username" value="${oracle.username}"/>
+                <property name="password" value="${oracle.password}"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <databaseIdProvider type="DB_VENDOR">
+        <property name="Oracle" value="oracle"/>
+        <property name="MySQL" value="mysql"/>
+        <property name="SQL Server" value="sqlserver"/>
+    </databaseIdProvider>
+
+    <mappers>
+        <!--<mapper resource="com/self/learning/mapper/EmployeeMapper.xml"/>-->
+        <!--<mapper class="com.self.learning.mapper.EmployeeAnnotationMapper"/>-->
+        <package name="com.self.learning.mapper"/>
+    </mappers>
+</configuration>
