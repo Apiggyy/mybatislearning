@@ -4,7 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.self.learning.mapper.EmployeeMapper">
 
-    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+    <!--<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>-->
+    <cache/>
 
     <resultMap id="employeeMap" type="com.self.learning.entity.Employee">
         <id property="id" column="id"/>
@@ -172,6 +173,10 @@
                 last_name like '%${lastName}%'
             </if>
         </where>
+    </select>
+
+    <select id="selectAllEmployees" resultType="com.self.learning.entity.Employee">
+        select * from tbl_employee
     </select>
 
 </mapper>

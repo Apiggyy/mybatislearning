@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.self.learning.mapper.DepartmentMapper">
 
-    <cache-ref namespace="com.self.learning.mapper.EmployeeMapper"/>
+    <!--<cache-ref namespace="EmployeeMapper"/>-->
+    <cache/>
 
     <select id="getDepartmentById" resultType="com.self.learning.entity.Department">
           select * from tbl_department where id = #{id}
@@ -30,7 +31,7 @@
     <resultMap id="getDepartmentByIdStep" type="com.self.learning.entity.Department">
         <id property="id" column="id"/>
         <result property="deptName" column="dept_name"/>
-        <!--<collection property="emps" select="com.self.learning.mapper.EmployeeMapper.selectEmployeeByDeptId" column="id"/>-->
+        <!--<collection property="emps" select="EmployeeMapper.selectEmployeeByDeptId" column="id"/>-->
     </resultMap>
 
     <select id="getDepartmentByIdStep" resultMap="getDepartmentByIdStep">

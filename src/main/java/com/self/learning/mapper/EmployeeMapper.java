@@ -11,6 +11,8 @@ public interface EmployeeMapper {
 
     Employee selectEmployee(Integer id);
 
+    List<Employee> selectAllEmployees();
+
     Employee selectEmployeeByParam(@Param("id") int id, @Param("lastName") String lastName);
 
     Employee selectEmployeeByResultMap(Integer id);

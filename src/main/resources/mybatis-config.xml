@@ -13,6 +13,14 @@
         <setting name="lazyLoadingEnabled" value="true"/>
         <setting name="aggressiveLazyLoading" value="false"/>
     </settings>
+
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 使用下面的方式配置参数，后面会有所有的参数介绍 -->
+            <!--<property name="param1" value="value1"/>-->
+        </plugin>
+    </plugins>
     
     <environments default="mysql">
 
@@ -46,7 +54,7 @@
 
     <mappers>
         <!--<mapper resource="com/self/learning/mapper/EmployeeMapper.xml"/>-->
-        <!--<mapper class="com.self.learning.mapper.EmployeeAnnotationMapper"/>-->
+        <!--<mapper class="EmployeeAnnotationMapper"/>-->
         <package name="com.self.learning.mapper"/>
     </mappers>
 </configuration>

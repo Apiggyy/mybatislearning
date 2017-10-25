@@ -8,4 +8,5 @@ public interface DepartmentMapper {
     Department getDepartmentByIdPlus(Integer id);
 
     Department getDepartmentByIdStep(Integer id);
+
 }

@@ -1,5 +1,8 @@
 package com.self.learning;
 
+import com.github.pagehelper.ISelect;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.self.learning.entity.Department;
 import com.self.learning.entity.Employee;
 import com.self.learning.mapper.DepartmentMapper;
@@ -12,7 +15,12 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mybatis.generator.api.MyBatisGenerator;
+import org.mybatis.generator.config.Configuration;
+import org.mybatis.generator.config.xml.ConfigurationParser;
+import org.mybatis.generator.internal.DefaultShellCallback;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -34,17 +42,17 @@ public class MybatisTest {
             e.printStackTrace();
         }
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        //sqlSession = sqlSessionFactory.openSession();
+        sqlSession = sqlSessionFactory.openSession();
     }
 
     @After
     public void destory() {
-        //sqlSession.close();
+        sqlSession.close();
     }
 
     @Test
     public void test() {
-        //Employee employee = (Employee) sqlSession.selectOne("com.self.learning.mapper.EmployeeMapper.selectEmployee", 1);
+        //Employee employee = (Employee) sqlSession.selectOne("EmployeeMapper.selectEmployee", 1);
         EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
         Employee employee = mapper.selectEmployee(1);
         System.out.println(employee);
@@ -97,14 +105,14 @@ public class MybatisTest {
         System.out.println(employee);
     }
 
-    @Test
-    public void testJdbcType() {
-        EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
-        Employee employee = new Employee("qianliu",null,null);
-        mapper.insertEmployee(employee);
-        System.out.println(employee);
-        sqlSession.commit();
-    }
+    //@Test
+    //public void testJdbcType() {
+    //    EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+    //    Employee employee = new Employee("qianliu",null,null);
+    //    mapper.insertEmployee(employee);
+    //    System.out.println(employee);
+    //    sqlSession.commit();
+    //}
 
     @Test
     public void testReturnList() {
@@ -139,14 +147,14 @@ public class MybatisTest {
         System.out.println(employee);
     }
 
-    @Test
+/*    @Test
     public void testSelectEmployeeByAssociationStep() {
         EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
         Employee employee = mapper.selectEmployeeByAssociationStep(4);
         //System.out.println(employee);
         System.out.println(employee.getLastName());
         System.out.println(employee.getDept().getDeptName());
-    }
+    }*/
 
     @Test
     public void testGetDepartmentByIdPlus() {
@@ -155,13 +163,13 @@ public class MybatisTest {
         System.out.println(department);
     }
 
-    @Test
+/*    @Test
     public void testGetDepartmentByIdStep() {
         DepartmentMapper departmentMapper = sqlSession.getMapper(DepartmentMapper.class);
         Department department = departmentMapper.getDepartmentByIdStep(1);
         System.out.println(department.getDeptName());
         System.out.println(department.getEmps().size());
-    }
+    }*/
 
     @Test
     public void testSelectEmployeeByDynamicSql() {
@@ -189,7 +197,7 @@ public class MybatisTest {
         System.out.println(employee);
     }
 
-    @Test
+/*    @Test
     public void testInsertEmpsBatch() {
         EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
         Employee employee1 = new Employee("emp-05","emp05@qq.com","1",new Department(30,null));
@@ -199,7 +207,7 @@ public class MybatisTest {
         emps.add(employee2);
         mapper.insertEmpsBatch(emps);
         sqlSession.commit();
-    }
+    }*/
 
     @Test
     public void testInnerParameter() {
@@ -234,6 +242,35 @@ public class MybatisTest {
         List<Employee> emp2 = mapper2.selectEmployeeAndDepartmentById(1);
         System.out.println(emp2);
         sqlSession2.close();
+    }
+
+    @Test
+    public void testPageHelper() {
+        final EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+        PageInfo<Employee> pageInfo = PageHelper.startPage(4, 5).doSelectPageInfo(new ISelect() {
+            public void doSelect() {
+                mapper.selectAllEmployees();
+            }
+        });
+        System.out.println("总页数:" + pageInfo.getPages());
+        System.out.println("当前页:" + pageInfo.getPageNum());
+        System.out.println("页大小:" + pageInfo.getPageSize());
+        System.out.println("总条数:" + pageInfo.getTotal());
+        for (Employee Employee : pageInfo.getList()) {
+            System.out.println(Employee);
+        }
+    }
+
+    @Test
+    public void testMbgFromJava() throws Exception {
+        List<String> warnings = new ArrayList<String>();
+        boolean overwrite = true;
+        File configFile = new File(System.getProperty("user.dir") + "/src/main/resources/generatorConfig.xml");
+        ConfigurationParser cp = new ConfigurationParser(warnings);
+        Configuration config = cp.parseConfiguration(configFile);
+        DefaultShellCallback callback = new DefaultShellCallback(overwrite);
+        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+        myBatisGenerator.generate(null);
     }
 
 }
