@@ -38,7 +38,7 @@
 
             memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。可选策略有：LRU（最近最少使用，默认策略）、FIFO（先进先出）、LFU（最少访问次数）。
     -->
-<!--    <cache name="com.self.learning.entity.Department"
+<!--    <cache name="com.self.learning.entity.customer.Department"
            maxElementsInMemory="10000"
            eternal="false"
            timeToIdleSeconds="300"
@@ -46,7 +46,7 @@
            overflowToDisk="true"
     />-->
 
-<!--    <cache name="com.self.learning.entity.Employee"
+<!--    <cache name="com.self.learning.entity.customer.Employee"
            maxElementsInMemory="10000"
            eternal="false"
            timeToIdleSeconds="300"
